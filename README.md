@@ -1,31 +1,43 @@
-# Deepfake Detector (WGAN-GP)
+<div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Flask](https://img.shields.io/badge/Flask-3.x-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![Last Commit](https://img.shields.io/github/last-commit/1234620/deepfake-detector-wgan-gp?style=for-the-badge&logo=github)](https://github.com/1234620/deepfake-detector-wgan-gp/commits)
-[![Repo Size](https://img.shields.io/github/repo-size/1234620/deepfake-detector-wgan-gp?style=for-the-badge)](https://github.com/1234620/deepfake-detector-wgan-gp)
-[![Stars](https://img.shields.io/github/stars/1234620/deepfake-detector-wgan-gp?style=for-the-badge)](https://github.com/1234620/deepfake-detector-wgan-gp/stargazers)
+# DEEPFAKE DETECTION SYSTEM
 
-Deepfake detection pipeline built on WGAN-GP with a runnable Flask backend, an image upload inference homepage, and a separate report page.
+### *Detecting Manipulation, Preserving Truth, Securing Authenticity*
 
-## What This Repository Contains
+[![Last Commit](https://img.shields.io/github/last-commit/1234620/deepfake-detector-wgan-gp?style=flat-square&label=last%20commit)](https://github.com/1234620/deepfake-detector-wgan-gp/commits)
+[![Top Language](https://img.shields.io/github/languages/top/1234620/deepfake-detector-wgan-gp?style=flat-square&label=top%20language)](https://github.com/1234620/deepfake-detector-wgan-gp)
+[![Languages](https://img.shields.io/github/languages/count/1234620/deepfake-detector-wgan-gp?style=flat-square&label=languages)](https://github.com/1234620/deepfake-detector-wgan-gp)
 
-- End-to-end training pipeline for deepfake detection
-- Saved checkpoints and threshold for inference
-- Web backend API for prediction
-- Clean frontend inference page
-- Separate report page for evaluation visuals
+### *Built with the tools and technologies:*
 
-## Project Layout
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/docs/Web/JavaScript)
 
-- `model/` training code, architecture, losses, and configuration
-- `checkpoints/` model weights and threshold
-- `results/` confusion matrix, ROC curve, training loss plot
-- `backend/` Flask server for API and frontend routes
-- `frontend/` inference UI and report page
+</div>
 
-## Run Locally
+---
+
+## Features
+
+- WGAN-GP based deepfake detection training pipeline.
+- Flask backend with image upload inference endpoint.
+- Front page for live prediction and separate report page for evaluation plots.
+- Saved checkpoints and threshold-based critic inference.
+
+## Repository Structure
+
+- `backend/` Flask server and inference API.
+- `frontend/` inference page, report page, scripts, and styles.
+- `model/` training loop, architecture, and hyperparameters.
+- `checkpoints/` trained weights and threshold file.
+- `results/` confusion matrix, ROC curve, and training loss curves.
+
+## Quick Start
 
 Install dependencies:
 
@@ -35,7 +47,7 @@ python3 -m pip install -r model/requirements.txt
 python3 -m pip install flask
 ```
 
-Start the app:
+Run backend and frontend:
 
 ```bash
 bash frontend/start_frontend.sh
@@ -46,7 +58,7 @@ Open in browser:
 - Home: `http://127.0.0.1:5500/`
 - Report: `http://127.0.0.1:5500/report`
 
-If port 5500 is already used:
+If port 5500 is already in use:
 
 ```bash
 PID=$(lsof -ti :5500 || true)
@@ -54,7 +66,7 @@ PID=$(lsof -ti :5500 || true)
 bash frontend/start_frontend.sh
 ```
 
-## API Endpoints
+## API
 
 Health:
 
@@ -62,19 +74,19 @@ Health:
 curl http://127.0.0.1:5500/api/health
 ```
 
-Predict from image:
+Predict:
 
 ```bash
 curl -X POST http://127.0.0.1:5500/api/predict -F "image=@/path/to/image.jpg"
 ```
 
-## Inference Details
+## Inference Runtime
 
-- Inference model: `checkpoints/critic_final.pth`
-- Threshold source: `checkpoints/threshold.txt`
-- Preprocessing: resize to 64x64, normalize to [-1, 1]
-- Decision rule: score > threshold => REAL, else DEEPFAKE
+- Model weights: `checkpoints/critic_final.pth`
+- Threshold file: `checkpoints/threshold.txt`
+- Input preprocessing: resize to 64x64 and normalize to [-1, 1]
+- Decision rule: score > threshold -> REAL, otherwise DEEPFAKE
 
-## Repository
+## Repository Link
 
-- URL: https://github.com/1234620/deepfake-detector-wgan-gp
+https://github.com/1234620/deepfake-detector-wgan-gp
