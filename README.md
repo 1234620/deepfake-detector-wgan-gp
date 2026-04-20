@@ -22,6 +22,21 @@
 
 ---
 
+## Project Overview
+
+This project builds a deepfake detection system using a WGAN-GP training pipeline.
+During training, a Generator creates synthetic images and a Critic learns to score image
+realness. After training, the Generator is discarded and the Critic is reused as the
+detector model.
+
+The repository includes a runnable backend and frontend:
+
+- The frontend home page accepts an image upload.
+- The backend runs inference with the trained Critic checkpoint.
+- The model score is compared against a saved threshold.
+- The output is returned as REAL or DEEPFAKE.
+- A separate report page displays saved evaluation artifacts.
+
 ## Features
 
 - WGAN-GP based deepfake detection training pipeline.
@@ -29,13 +44,46 @@
 - Front page for live prediction and separate report page for evaluation plots.
 - Saved checkpoints and threshold-based critic inference.
 
-## Repository Structure
+## Project Tree
 
-- `backend/` Flask server and inference API.
-- `frontend/` inference page, report page, scripts, and styles.
-- `model/` training loop, architecture, and hyperparameters.
-- `checkpoints/` trained weights and threshold file.
-- `results/` confusion matrix, ROC curve, and training loss curves.
+```text
+1st Model/
+├── backend/
+│   └── app.py
+├── checkpoints/
+│   ├── critic_final.pth
+│   ├── generator_final.pth
+│   ├── threshold.txt
+│   ├── crit_epoch_*.pth
+│   └── gen_epoch_*.pth
+├── frontend/
+│   ├── index.html
+│   ├── report.html
+│   ├── main.js
+│   ├── app.js
+│   ├── main.css
+│   ├── styles.css
+│   └── start_frontend.sh
+├── model/
+│   ├── config.py
+│   ├── models.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── README.md
+├── results/
+│   ├── confusion_matrix.png
+│   ├── roc_curve.png
+│   └── training_losses.png
+└── README.md
+```
+
+## What The System Does
+
+1. Accepts an input image from the frontend or API.
+2. Applies the same preprocessing used in model training (resize and normalization).
+3. Runs the image through the trained Critic network.
+4. Compares the score with the saved threshold.
+5. Returns a final binary classification: REAL or DEEPFAKE.
 
 ## Quick Start
 
