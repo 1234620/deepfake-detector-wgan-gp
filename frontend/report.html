@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepfake Detector Report</title>
+  <link rel="stylesheet" href="/frontend/styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <div class="ambient ambient-c" aria-hidden="true"></div>
+
+  <main class="page">
+    <header class="hero">
+      <div class="echo" aria-hidden="true">
+        <span class="echo-layer echo-1">MODEL REPORT</span>
+        <span class="echo-layer echo-2">MODEL REPORT</span>
+        <span class="echo-layer echo-3">MODEL REPORT</span>
+        <span class="echo-layer echo-4">MODEL REPORT</span>
+        <span class="echo-layer echo-5">MODEL REPORT</span>
+      </div>
+
+      <h1 class="hero-title">MODEL REPORT</h1>
+      <p class="hero-copy">All evaluation details are isolated here so the home page stays focused on live inference.</p>
+
+      <div class="hero-strip interactive">
+        <p>Source model: critic_final.pth + threshold.txt</p>
+        <p><a href="/" style="color:inherit;">Back to detector page</a></p>
+      </div>
+    </header>
+
+    <section class="stats-grid" aria-label="Key results">
+      <article class="stat-card interactive">
+        <p class="stat-label">Threshold</p>
+        <p class="stat-value">13.2668</p>
+        <p class="stat-note">Exact file value: 13.266777405151728</p>
+      </article>
+
+      <article class="stat-card interactive">
+        <p class="stat-label">ROC AUC</p>
+        <p class="stat-value">0.6334</p>
+        <p class="stat-note">Read from roc_curve legend</p>
+      </article>
+
+      <article class="stat-card interactive">
+        <p class="stat-label">Test Samples</p>
+        <p class="stat-value">21,001</p>
+        <p class="stat-note">Derived from confusion matrix counts</p>
+      </article>
+
+      <article class="stat-card interactive">
+        <p class="stat-label">Accuracy</p>
+        <p class="stat-value">59.74%</p>
+        <p class="stat-note">(TP + TN) / all samples</p>
+      </article>
+    </section>
+
+    <section class="architecture-panel">
+      <div class="panel-head">
+        <h2>Pipeline Architecture</h2>
+        <p>Eight-step flow extracted from model/main.py and model/models.py.</p>
+      </div>
+
+      <ol class="flow-grid" aria-label="Pipeline steps">
+        <li class="flow-step interactive"><span>01</span><h3>Dataset Prep</h3><p>Load real/fake folders, resize to 64x64, normalize to [-1, 1], and split train/val/test.</p></li>
+        <li class="flow-step interactive"><span>02</span><h3>Noise Input</h3><p>Sample latent vectors with dimension 100 on active device.</p></li>
+        <li class="flow-step interactive"><span>03</span><h3>Generator</h3><p>Transpose-convolution stack maps noise to RGB 64x64 synthetic images.</p></li>
+        <li class="flow-step interactive"><span>04</span><h3>Critic</h3><p>Convolutional critic scores realness without Sigmoid and without BatchNorm.</p></li>
+        <li class="flow-step interactive"><span>05</span><h3>WGAN-GP Loss</h3><p>Optimize Wasserstein objective with gradient penalty (lambda = 10).</p></li>
+        <li class="flow-step interactive"><span>06</span><h3>Training Loop</h3><p>Per batch: critic updates x5, generator update x1, for 100 epochs.</p></li>
+        <li class="flow-step interactive"><span>07</span><h3>Detector Mode</h3><p>Discard generator, tune threshold on validation scores, keep critic for detection.</p></li>
+        <li class="flow-step interactive"><span>08</span><h3>Artifact Output</h3><p>Persist threshold and plots in checkpoints and results folders.</p></li>
+      </ol>
+    </section>
+
+    <section class="stats-grid compact" aria-label="Derived metrics">
+      <article class="stat-card interactive">
+        <p class="stat-label">Precision (Real class)</p>
+        <p class="stat-value">56.63%</p>
+      </article>
+      <article class="stat-card interactive">
+        <p class="stat-label">Recall (Real class)</p>
+        <p class="stat-value">80.69%</p>
+      </article>
+      <article class="stat-card interactive">
+        <p class="stat-label">F1 Score (Real class)</p>
+        <p class="stat-value">66.56%</p>
+      </article>
+      <article class="stat-card interactive">
+        <p class="stat-label">Interpretation</p>
+        <p class="stat-value small">Current run is usable as a baseline, not a production detector.</p>
+      </article>
+    </section>
+
+    <section class="plots" aria-label="Result plots">
+      <article class="plot-card interactive reveal-shell">
+        <h3>Confusion Matrix Plot</h3>
+        <img class="reveal-image" src="/results/confusion_matrix.png" alt="Confusion matrix plot" loading="lazy" />
+      </article>
+
+      <article class="plot-card interactive reveal-shell">
+        <h3>ROC Curve Plot</h3>
+        <img class="reveal-image" src="/results/roc_curve.png" alt="ROC curve plot" loading="lazy" />
+      </article>
+
+      <article class="plot-card interactive reveal-shell">
+        <h3>Training Loss Curves</h3>
+        <img class="reveal-image" src="/results/training_losses.png" alt="Training loss curves" loading="lazy" />
+      </article>
+    </section>
+
+    <section class="model-facts" aria-label="Model facts">
+      <div class="panel-head">
+        <h2>Model and Run Facts</h2>
+        <p>Pulled from model/config.py, model/models.py, and model/main.py.</p>
+      </div>
+      <div class="facts-grid">
+        <article class="fact-card interactive">
+          <h3>Config</h3>
+          <ul>
+            <li>Image size: 64 x 64, RGB (3 channels)</li>
+            <li>Noise dim: 100</li>
+            <li>Epochs: 100</li>
+            <li>Batch size: 64</li>
+            <li>Learning rate: 1e-4</li>
+            <li>Critic iterations per generator update: 5</li>
+            <li>Gradient penalty lambda: 10</li>
+            <li>Seed: 42</li>
+          </ul>
+        </article>
+        <article class="fact-card interactive">
+          <h3>Runtime Artifacts</h3>
+          <ul>
+            <li id="thresholdArtifact">checkpoints/threshold.txt: Checking...</li>
+            <li id="cmArtifact">results/confusion_matrix.png: Checking...</li>
+            <li id="rocArtifact">results/roc_curve.png: Checking...</li>
+            <li id="lossArtifact">results/training_losses.png: Checking...</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footnote">
+      <p>Sources: model/config.py, model/main.py, model/models.py, checkpoints/threshold.txt, and results plots.</p>
+      <p id="generatedAt">Generated: </p>
+    </footer>
+  </main>
+
+  <script src="/frontend/app.js" defer></script>
+</body>
+</html>

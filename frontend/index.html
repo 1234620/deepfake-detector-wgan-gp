@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepfake Detector</title>
+  <link rel="stylesheet" href="/frontend/main.css" />
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <main class="page">
+    <nav class="topbar" aria-label="Top navigation">
+      <p class="brand">WGAN-GP Deepfake Detector</p>
+      <a class="report-link" href="/report">Open Full Report</a>
+    </nav>
+
+    <header class="hero">
+      <div class="echo" aria-hidden="true">
+        <span class="echo-layer echo-1">DETECT</span>
+        <span class="echo-layer echo-2">DETECT</span>
+        <span class="echo-layer echo-3">DETECT</span>
+        <span class="echo-layer echo-4">DETECT</span>
+        <span class="echo-layer echo-5">DETECT</span>
+      </div>
+      <h1>DETECT</h1>
+      <p>Upload one image, run the trained critic, and get a real-time prediction from your backend model.</p>
+    </header>
+
+    <section class="workbench" aria-label="Live detector workbench">
+      <section class="upload-col">
+        <h2 class="section-title">Input Image</h2>
+        <p class="section-sub">Accepted: jpg, jpeg, png, bmp, tiff</p>
+
+        <div class="dropzone">
+          <img id="previewImage" alt="Selected input preview" hidden />
+          <div id="placeholder" class="placeholder">
+            <p>No image selected yet.</p>
+          </div>
+        </div>
+
+        <form id="uploadForm" class="controls">
+          <input id="imageInput" class="file-input" type="file" accept="image/*" required />
+          <button id="runBtn" class="run-btn" type="submit">Run Detection</button>
+        </form>
+      </section>
+
+      <section class="result-col">
+        <h2 class="section-title">Model Output</h2>
+        <p class="section-sub">Inference endpoint: POST /api/predict</p>
+
+        <div class="status-grid">
+          <article class="status-item">
+            <p class="label">Backend</p>
+            <p id="backendValue" class="value">Checking...</p>
+          </article>
+          <article class="status-item">
+            <p class="label">Prediction</p>
+            <p id="predictionValue" class="value">-</p>
+          </article>
+          <article class="status-item">
+            <p class="label">Score</p>
+            <p id="scoreValue" class="value">-</p>
+          </article>
+          <article class="status-item">
+            <p class="label">Threshold</p>
+            <p id="thresholdValue" class="value">-</p>
+          </article>
+          <article class="status-item">
+            <p class="label">Device</p>
+            <p id="deviceValue" class="value small">-</p>
+          </article>
+          <article class="status-item">
+            <p class="label">Message</p>
+            <p id="messageValue" class="value small">Waiting...</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <footer>
+      <p>Frontend home is now inference-only. Report details live on the separate report page.</p>
+    </footer>
+  </main>
+
+  <script src="/frontend/main.js" defer></script>
+</body>
+</html>
